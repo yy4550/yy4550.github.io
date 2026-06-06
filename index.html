@@ -128,13 +128,24 @@ html {
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: var(--bg-primary);
+  background: radial-gradient(ellipse at 50% 0%, #181430 0%, #0a0a0f 45%, #0a0a12 100%);
+  background-size: 100% 200%;
+  animation: bg-breathe 10s ease-in-out infinite;
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: color 0.3s ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+@keyframes bg-breathe {
+  0%, 100% { background-position: 50% 0%; }
+  50% { background-position: 50% 100%; }
+}
+[data-theme="light"] body {
+  background: radial-gradient(ellipse at 50% 0%, #eee8f5 0%, #f8f7f4 45%, #f3f1ed 100%);
+  background-size: 100% 200%;
+  animation: bg-breathe 10s ease-in-out infinite;
 }
 
 /* Custom text selection */
@@ -190,6 +201,70 @@ body {
   transition: opacity 0.5s;
   mix-blend-mode: overlay;
   will-change: left, top;
+}
+
+/* ============================================================
+   Ambient Drifting Orbs — slow-moving background light blobs
+   ============================================================ */
+.ambient-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.1;
+  will-change: transform;
+}
+.ambient-orb-1 {
+  width: 600px; height: 600px;
+  background: #6366f1;
+  top: -15%; left: 55%;
+  animation: drift-1 22s ease-in-out infinite;
+}
+.ambient-orb-2 {
+  width: 450px; height: 450px;
+  background: #a855f7;
+  top: 45%; left: -8%;
+  animation: drift-2 26s ease-in-out infinite;
+}
+.ambient-orb-3 {
+  width: 380px; height: 380px;
+  background: #ec4899;
+  bottom: -10%; right: 5%;
+  animation: drift-3 20s ease-in-out infinite;
+}
+@keyframes drift-1 {
+  0%, 100% { transform: translate(0, 0); }
+  25%  { transform: translate(70px, -50px); }
+  50%  { transform: translate(-30px, -90px); }
+  75%  { transform: translate(-60px, 20px); }
+}
+@keyframes drift-2 {
+  0%, 100% { transform: translate(0, 0); }
+  33%  { transform: translate(-50px, 60px); }
+  66%  { transform: translate(40px, -30px); }
+}
+@keyframes drift-3 {
+  0%, 100% { transform: translate(0, 0); }
+  30%  { transform: translate(-80px, -40px); }
+  60%  { transform: translate(30px, 50px); }
+  85%  { transform: translate(50px, -20px); }
+}
+
+/* CSS Dot Grid — subtle texture overlay */
+.bg-dot-grid {
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.7;
+  animation: dots-breathe 6s ease-in-out infinite;
+}
+@keyframes dots-breathe {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.8; }
 }
 
 /* ============================================================
@@ -1407,6 +1482,14 @@ body {
 
 <!-- Mouse Follow Glow -->
 <div id="mouseGlow"></div>
+
+<!-- Ambient Drifting Orbs (global background) -->
+<div class="ambient-orb ambient-orb-1"></div>
+<div class="ambient-orb ambient-orb-2"></div>
+<div class="ambient-orb ambient-orb-3"></div>
+
+<!-- CSS Dot Grid Texture -->
+<div class="bg-dot-grid"></div>
 
 <!-- ============================================================
      Navigation Bar

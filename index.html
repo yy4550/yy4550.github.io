@@ -436,7 +436,11 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   background-size: 200% 200%;
-  animation: gradient-shift 4s ease infinite;
+  animation: gradient-shift 4s ease infinite, text-breathing 3s ease-in-out infinite;
+}
+@keyframes text-breathing {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(139,92,246,0.25)); }
+  50% { filter: drop-shadow(0 0 18px rgba(139,92,246,0.5)); }
 }
 
 @keyframes gradient-shift {
@@ -585,11 +589,22 @@ body {
 .social-float a:nth-child(1) { animation-delay: 0.1s; }
 .social-float a:nth-child(2) { animation-delay: 0.25s; }
 .social-float a:nth-child(3) { animation-delay: 0.4s; }
+.social-float a {
+  animation: social-enter 0.6s ease-out both, icon-breathe 3s ease-in-out infinite;
+}
+.social-float a:nth-child(1) { animation-delay: 0.1s, 0.1s; }
+.social-float a:nth-child(2) { animation-delay: 0.25s, 0.8s; }
+.social-float a:nth-child(3) { animation-delay: 0.4s, 1.6s; }
 .social-float a:hover {
   color: var(--accent-1);
   border-color: var(--accent-1);
   transform: translateY(-4px) scale(1.08);
   box-shadow: 0 8px 25px rgba(139, 92, 246, 0.25);
+  animation: social-enter 0.6s ease-out both;
+}
+@keyframes icon-breathe {
+  0%, 100% { box-shadow: 0 0 0 rgba(139,92,246,0); }
+  50% { box-shadow: 0 0 14px rgba(139,92,246,0.2); }
 }
 
 @keyframes social-enter {
@@ -631,7 +646,13 @@ body {
   width: 60px;
   height: 100%;
   background: var(--gradient-1);
+  background-size: 200% 100%;
   border-radius: 1px;
+  animation: line-flow 3s ease infinite;
+}
+@keyframes line-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 /* Section divider — subtle gradient separator between sections */
@@ -667,8 +688,18 @@ body {
 .article-card:hover {
   transform: translateY(-8px) perspective(800px) rotateX(2deg);
   background: var(--bg-card-hover);
-  border-color: var(--border-glow);
-  box-shadow: var(--shadow-glow-strong);
+  border-color: rgba(139, 92, 246, 0.25);
+  animation: card-breathing 2.5s ease-in-out infinite;
+}
+@keyframes card-breathing {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.18), 0 8px 32px rgba(0,0,0,0.3);
+    border-color: rgba(139, 92, 246, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(139, 92, 246, 0.35), 0 12px 40px rgba(0,0,0,0.35);
+    border-color: rgba(168, 85, 247, 0.55);
+  }
 }
 
 /* Shimmer on hover */
@@ -916,6 +947,18 @@ body {
 @keyframes ring-pulse {
   0% { transform: scale(1); opacity: 0.8; }
   100% { transform: scale(1.4); opacity: 0; }
+}
+
+/* Second ring — offset timing for depth */
+.avatar-ring-2 {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-3);
+  animation: ring-pulse 2.5s ease-out 1.25s infinite;
 }
 
 .about-name {
@@ -1455,6 +1498,7 @@ body {
     <div class="about-card">
       <div class="avatar-wrapper">
         <div class="avatar-ring"></div>
+        <div class="avatar-ring-2"></div>
         <div class="avatar">yy</div>
       </div>
       <h3 class="about-name">yy</h3>
@@ -1947,6 +1991,8 @@ body {
         this.vx = (Math.random() - 0.5) * 0.6;
         this.vy = (Math.random() - 0.5) * 0.6;
         this.size = Math.random() * 2 + 0.5;
+        this.baseSize = this.size;
+        this.phase = Math.random() * Math.PI * 2;
         this.opacity = Math.random() * 0.5 + 0.15;
       }
       update() {
@@ -1978,8 +2024,10 @@ body {
         const r = isDark ? 200 : 100;
         const g = isDark ? 170 : 120;
         const b = isDark ? 255 : 200;
+        // Breathing size oscillation
+        const breathe = this.baseSize + Math.sin(Date.now() * 0.002 + this.phase) * 0.4;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, breathe, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.opacity})`;
         ctx.fill();
       }

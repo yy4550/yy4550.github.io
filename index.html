@@ -113,6 +113,40 @@ tailwind.config = {
 }
 
 /* ============================================================
+   Accent Color Themes (data-accent on <html>)
+   ============================================================ */
+[data-accent="blue"] {
+  --accent-1: #3b82f6; --accent-2: #2563eb; --accent-3: #06b6d4;
+  --gradient-1: linear-gradient(135deg, #3b82f6, #2563eb, #06b6d4);
+  --gradient-2: linear-gradient(135deg, #2563eb, #6366f1);
+  --gradient-hero: linear-gradient(135deg, #60a5fa 0%, #3b82f6 40%, #06b6d4 100%);
+}
+[data-accent="cyan"] {
+  --accent-1: #06b6d4; --accent-2: #0891b2; --accent-3: #22d3ee;
+  --gradient-1: linear-gradient(135deg, #06b6d4, #0891b2, #22d3ee);
+  --gradient-2: linear-gradient(135deg, #0891b2, #06b6d4);
+  --gradient-hero: linear-gradient(135deg, #22d3ee 0%, #06b6d4 40%, #67e8f9 100%);
+}
+[data-accent="green"] {
+  --accent-1: #10b981; --accent-2: #059669; --accent-3: #34d399;
+  --gradient-1: linear-gradient(135deg, #10b981, #059669, #34d399);
+  --gradient-2: linear-gradient(135deg, #059669, #10b981);
+  --gradient-hero: linear-gradient(135deg, #34d399 0%, #10b981 40%, #6ee7b7 100%);
+}
+[data-accent="orange"] {
+  --accent-1: #f97316; --accent-2: #ea580c; --accent-3: #fbbf24;
+  --gradient-1: linear-gradient(135deg, #f97316, #ea580c, #fbbf24);
+  --gradient-2: linear-gradient(135deg, #ea580c, #f97316);
+  --gradient-hero: linear-gradient(135deg, #fbbf24 0%, #f97316 40%, #fb923c 100%);
+}
+[data-accent="rose"] {
+  --accent-1: #f43f5e; --accent-2: #e11d48; --accent-3: #ec4899;
+  --gradient-1: linear-gradient(135deg, #f43f5e, #e11d48, #ec4899);
+  --gradient-2: linear-gradient(135deg, #e11d48, #f43f5e);
+  --gradient-hero: linear-gradient(135deg, #fda4af 0%, #f43f5e 40%, #ec4899 100%);
+}
+
+/* ============================================================
    Base Styles
    ============================================================ */
 * {
@@ -398,6 +432,71 @@ body {
 .theme-toggle:hover {
   background: var(--bg-glass-hover);
   border-color: var(--border-glow);
+}
+
+/* Accent Color Picker */
+.accent-picker {
+  position: relative;
+}
+.accent-toggle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--border-glass);
+  background: var(--bg-glass);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+.accent-toggle:hover {
+  background: var(--bg-glass-hover);
+}
+.accent-dot-current {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent-1);
+  transition: background 0.3s;
+}
+.accent-dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: 28px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 1001;
+}
+.accent-dropdown.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.accent-opt {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.accent-opt:hover {
+  transform: scale(1.2);
+}
+.accent-opt.active {
+  border-color: #fff;
+  box-shadow: 0 0 8px currentColor;
 }
 
 /* Hamburger Menu */
@@ -1895,6 +1994,21 @@ body {
     <i class="fa-solid fa-moon" id="themeIcon"></i>
   </button>
 
+  <!-- Color Accent Picker -->
+  <div class="accent-picker" id="accentPicker">
+    <button class="accent-toggle" id="accentToggle" aria-label="切换配色">
+      <span class="accent-dot-current" id="accentDotCurrent"></span>
+    </button>
+    <div class="accent-dropdown" id="accentDropdown">
+      <button data-accent="purple" class="accent-opt active" style="background:#a855f7" title="紫色"></button>
+      <button data-accent="blue"   class="accent-opt" style="background:#3b82f6" title="蓝色"></button>
+      <button data-accent="cyan"   class="accent-opt" style="background:#06b6d4" title="青色"></button>
+      <button data-accent="green"  class="accent-opt" style="background:#10b981" title="绿色"></button>
+      <button data-accent="orange" class="accent-opt" style="background:#f97316" title="橙色"></button>
+      <button data-accent="rose"   class="accent-opt" style="background:#f43f5e" title="玫红"></button>
+    </div>
+  </div>
+
   <button class="hamburger" id="hamburger" aria-label="菜单">
     <span></span>
     <span></span>
@@ -2089,9 +2203,9 @@ body {
 <div class="social-float" id="socialFloat">
   <a href="#" aria-label="Twitter" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
   <a href="https://github.com/yy4550" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i></a>
-  <a href="#" aria-label="Bilibili" title="哔哩哔哩"><i class="fa-brands fa-bilibili"></i></a>
+  <a href="https://space.bilibili.com/3546674135828506" aria-label="Bilibili" title="哔哩哔哩" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-bilibili"></i></a>
   <a href="#" aria-label="NetEase Music" title="网易云音乐"><i class="fa-solid fa-music"></i></a>
-  <a href="#" aria-label="QQ" title="QQ"><i class="fa-brands fa-qq"></i></a>
+  <a href="tencent://message/?uin=1228081773" aria-label="QQ" title="QQ: 1228081773"><i class="fa-brands fa-qq"></i></a>
   <a href="#" aria-label="LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
 </div>
 
@@ -2345,24 +2459,30 @@ body {
 
   function openArticleDetail(index) {
     currentArticleIndex = index;
-    userLiked = false;
     const article = articles[index];
     const overlay = document.getElementById('articleDetail');
 
+    // ---- Load persisted data from localStorage ----
+    const saved = loadArticleData(index);
+    if (saved) {
+      article.likes = saved.likes;
+      article.comments = saved.comments;
+      userLiked = saved.liked;
+    } else {
+      userLiked = false;
+      // Keep initial likes/comments from articles array (0 by default)
+    }
+
     // Populate cover
     document.getElementById('detailCover').className = 'detail-cover ' + article.coverClass;
-    // Populate tags
     document.getElementById('detailTags').innerHTML = article.tags.map((tag, j) =>
       `<span class="tag ${article.tagClass[j] || ''}">${tag}</span>`
     ).join('');
-    // Populate title
     document.getElementById('detailTitle').textContent = article.title;
-    // Populate meta
     document.getElementById('detailMeta').innerHTML = `
       <span><i class="fa-regular fa-calendar"></i> ${article.date}</span>
       <span><i class="fa-regular fa-clock"></i> ${article.readTime}</span>
     `;
-    // Populate content
     document.getElementById('detailContent').innerHTML = article.content;
 
     // Like section
@@ -2375,14 +2495,37 @@ body {
     document.getElementById('commentCount').textContent = article.comments.length;
     renderComments();
 
-    // Show overlay
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
     overlay.scrollTop = 0;
 
-    // Hide floating social icons while reading
     const sf = document.getElementById('socialFloat');
     if (sf) sf.style.display = 'none';
+  }
+
+  // ---- localStorage persistence helpers ----
+  function storageKey(index) {
+    return 'blog_article_' + index;
+  }
+
+  function loadArticleData(index) {
+    try {
+      const raw = localStorage.getItem(storageKey(index));
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) { return null; }
+  }
+
+  function persistArticle(index) {
+    if (index < 0) return;
+    const article = articles[index];
+    const data = {
+      likes: article.likes,
+      liked: userLiked,
+      comments: article.comments,
+    };
+    try {
+      localStorage.setItem(storageKey(index), JSON.stringify(data));
+    } catch (e) { /* quota exceeded, silently fail */ }
   }
 
   function closeArticleDetail() {
@@ -2424,14 +2567,15 @@ body {
         likeBtn.classList.add('liked');
         document.getElementById('likeIcon').className = 'fa-heart fa-solid';
         document.getElementById('likeCount').textContent = article.likes;
-        // Spawn floating hearts
         spawnHearts(e, likeBtn);
+        persistArticle(currentArticleIndex);
       } else {
         userLiked = false;
         article.likes--;
         likeBtn.classList.remove('liked');
         document.getElementById('likeIcon').className = 'fa-heart fa-regular';
         document.getElementById('likeCount').textContent = article.likes;
+        persistArticle(currentArticleIndex);
       }
     });
 
@@ -2471,6 +2615,7 @@ body {
     });
     input.value = '';
     renderComments();
+    persistArticle(currentArticleIndex);
   }
 
   function spawnHearts(e, btn) {
@@ -2600,6 +2745,45 @@ body {
       const isDark = html.getAttribute('data-theme') === 'dark';
       icon.className = isDark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
       toggle.setAttribute('aria-pressed', String(!isDark));
+    }
+  }
+
+  // ============================================================
+  // Accent Color Picker
+  // ============================================================
+  function initAccentPicker() {
+    const html = document.documentElement;
+    const toggle = document.getElementById('accentToggle');
+    const dropdown = document.getElementById('accentDropdown');
+    const dotCurrent = document.getElementById('accentDotCurrent');
+    const options = dropdown.querySelectorAll('.accent-opt');
+
+    // Load saved accent
+    const saved = localStorage.getItem('blog-accent') || 'purple';
+    setAccent(saved);
+
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('open');
+    });
+
+    options.forEach(opt => {
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const accent = opt.getAttribute('data-accent');
+        setAccent(accent);
+        localStorage.setItem('blog-accent', accent);
+        dropdown.classList.remove('open');
+      });
+    });
+
+    // Close dropdown on outside click
+    document.addEventListener('click', () => dropdown.classList.remove('open'));
+
+    function setAccent(accent) {
+      html.setAttribute('data-accent', accent);
+      dotCurrent.style.background = getComputedStyle(html).getPropertyValue('--accent-1').trim();
+      options.forEach(o => o.classList.toggle('active', o.getAttribute('data-accent') === accent));
     }
   }
 
@@ -2962,6 +3146,7 @@ body {
   function init() {
     initLoadingBar();
     initThemeToggle();
+    initAccentPicker();
     renderArticles();
     renderFriends();
     initTypingEffect();

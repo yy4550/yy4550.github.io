@@ -1365,6 +1365,332 @@ body {
 }
 
 /* ============================================================
+   Article Detail Page
+   ============================================================ */
+.article-detail-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: var(--bg-primary);
+  overflow-y: auto;
+  animation: detailIn 0.35s ease;
+}
+.article-detail-overlay.active {
+  display: block;
+}
+@keyframes detailIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.article-detail-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 24px 60px;
+}
+
+.detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-primary);
+  padding: 10px 20px;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 24px;
+  transition: all 0.3s;
+  position: sticky;
+  top: 16px;
+  z-index: 10;
+}
+.detail-back:hover {
+  background: var(--bg-glass-hover);
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+}
+
+.detail-cover {
+  width: 100%;
+  height: 300px;
+  border-radius: 24px;
+  margin-bottom: 28px;
+}
+
+.detail-body { position: relative; }
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.detail-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.detail-meta {
+  display: flex;
+  gap: 16px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.detail-content {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+}
+.detail-content h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.3rem;
+  color: var(--text-primary);
+  margin: 36px 0 12px;
+}
+.detail-content p {
+  margin-bottom: 16px;
+}
+.detail-content blockquote {
+  border-left: 3px solid var(--accent-1);
+  padding: 12px 20px;
+  margin: 24px 0;
+  background: var(--bg-card);
+  border-radius: 0 12px 12px 0;
+  color: var(--text-primary);
+  font-style: italic;
+}
+
+/* Like Section */
+.like-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 40px 0;
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 40px;
+  border: 1px solid var(--border-glass);
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: visible;
+}
+.like-btn:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  transform: scale(1.05);
+}
+.like-btn.liked {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+.like-btn.liked .fa-heart {
+  font-weight: 900;
+  animation: heart-pop 0.4s ease;
+}
+@keyframes heart-pop {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.4); }
+  60% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+/* Floating hearts on click */
+.like-float-heart {
+  position: absolute;
+  color: #ef4444;
+  font-size: 1.2rem;
+  pointer-events: none;
+  animation: float-heart-up 1s ease-out forwards;
+}
+@keyframes float-heart-up {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-60px) scale(1.5); }
+}
+
+.like-hint {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Comments */
+.comments-section {
+  margin-top: 20px;
+}
+
+.comments-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.comment-item {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
+  animation: commentIn 0.3s ease;
+}
+@keyframes commentIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.comment-item-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--gradient-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.comment-item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.comment-item-author {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.comment-item-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.comment-item-time {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Comment Form */
+.comment-form {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.comment-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--gradient-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.comment-input-wrap {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 24px;
+  padding: 6px 6px 6px 18px;
+  transition: border-color 0.3s;
+}
+.comment-input-wrap:focus-within {
+  border-color: var(--accent-1);
+  box-shadow: 0 0 12px rgba(139,92,246,0.15);
+}
+
+.comment-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+}
+.comment-input::placeholder {
+  color: var(--text-muted);
+}
+
+.comment-submit {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: var(--gradient-2);
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  flex-shrink: 0;
+}
+.comment-submit:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px rgba(99,102,241,0.4);
+}
+.comment-submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ============================================================
    Responsive Design
    ============================================================ */
 
@@ -1696,6 +2022,48 @@ body {
 
 </div>
 
+<!-- ============================================================
+     Article Detail Page (hidden by default)
+     ============================================================ -->
+<div class="article-detail-overlay" id="articleDetail">
+  <div class="article-detail-container">
+    <button class="detail-back" id="detailBack" aria-label="返回">
+      <i class="fa-solid fa-arrow-left"></i> 返回首页
+    </button>
+    <div class="detail-cover" id="detailCover"></div>
+    <div class="detail-body">
+      <div class="detail-tags" id="detailTags"></div>
+      <h1 class="detail-title" id="detailTitle"></h1>
+      <div class="detail-meta" id="detailMeta"></div>
+      <div class="detail-content" id="detailContent"></div>
+
+      <!-- Like Section -->
+      <div class="like-section" id="likeSection">
+        <button class="like-btn" id="likeBtn" aria-label="点赞">
+          <i class="fa-heart" id="likeIcon"></i>
+          <span id="likeCount">0</span>
+        </button>
+        <span class="like-hint">喜欢这篇文章吗？点个赞吧 ✨</span>
+      </div>
+
+      <!-- Comments Section -->
+      <div class="comments-section">
+        <h3 class="comments-title">💬 评论 <span id="commentCount">0</span></h3>
+        <div class="comments-list" id="commentsList"></div>
+        <div class="comment-form">
+          <div class="comment-avatar">你</div>
+          <div class="comment-input-wrap">
+            <input type="text" class="comment-input" id="commentInput" placeholder="写下你的想法…" maxlength="280">
+            <button class="comment-submit" id="commentSubmit">
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Floating Social Icons -->
 <div class="social-float" id="socialFloat">
   <a href="#" aria-label="Twitter" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
@@ -1727,6 +2095,16 @@ body {
       date: '2026-05-20',
       readTime: '8 min',
       coverClass: 'cover-pattern-0',
+      likes: 128,
+      comments: [
+        { author: 'Sunny', avatar: 'S', text: '写得非常透彻，微前端那部分受益良多！', time: '2026-05-21' },
+        { author: 'CodeMaster', avatar: 'C', text: '期待下一篇关于 Module Federation 的深入讲解', time: '2026-05-22' },
+      ],
+      content: `<p>在现代前端开发中，随着应用规模的增长，单体架构逐渐暴露出维护困难、构建缓慢、团队协作效率低下等问题。本文将从组件化设计模式出发，逐步深入到微前端架构的实践。</p>
+<h3>组件化的演进</h3><p>从最早的 jQuery 插件到 React/Vue 的组件化思想，前端工程化经历了巨大的变革。组件化不仅仅是 UI 的拆分，更是逻辑、样式、状态的封装。</p>
+<h3>为什么需要微前端</h3><p>当多个团队共同维护一个大型应用时，技术栈的统一变得困难。微前端允许每个团队选择最适合的技术栈，独立开发、测试、部署，最终组合成一个完整的应用。</p>
+<blockquote>微前端的核心价值不在于技术本身，而在于它带来的组织架构优化和团队自治能力。</blockquote>
+<h3>实践建议</h3><p>选择微前端方案时需要权衡：qiankun 适合渐进式迁移，Module Federation 适合构建时集成，single-spa 则提供了最大的灵活性。关键是根据团队规模和项目阶段做出选择。</p>`,
     },
     {
       title: 'CSS 艺术：用纯代码创造令人惊叹的视觉效果',
@@ -1736,6 +2114,14 @@ body {
       date: '2026-05-15',
       readTime: '6 min',
       coverClass: 'cover-pattern-1',
+      likes: 96,
+      comments: [
+        { author: 'DesignLover', avatar: 'D', text: 'CSS 真的太强大了，这些技巧我要一个一个试！', time: '2026-05-16' },
+      ],
+      content: `<p>CSS 早已不是当年那个只能设置颜色和字体的简单语言了。现代 CSS 拥有强大的布局能力、动画系统和视觉效果，完全可以取代大量图片和 JavaScript。</p>
+<h3>渐变的力量</h3><p>CSS 渐变可以创建从简单的双色过渡到复杂的多色混合效果。配合 background-size 和 animation，你能创造出流动的、有机的视觉效果。</p>
+<h3>3D 变换</h3><p>perspective 和 transform-style: preserve-3d 开启了 CSS 的第三维度。结合 animation，卡片翻转、3D 轮播不再是难事。</p>
+<h3>滤镜与混合模式</h3><p>filter 和 backdrop-filter 带来了 Photoshop 级别的视觉效果，毛玻璃、色彩调整、模糊等效果只需一行代码。</p>`,
     },
     {
       title: 'AI 驱动的开发工作流：Copilot 与 ChatGPT 实战',
@@ -1745,6 +2131,16 @@ body {
       date: '2026-05-10',
       readTime: '10 min',
       coverClass: 'cover-pattern-2',
+      likes: 203,
+      comments: [
+        { author: 'AI先锋', avatar: 'A', text: 'Copilot 确实改变了我的编码方式，尤其是写测试的时候', time: '2026-05-11' },
+        { author: '老码农', avatar: '老', text: '有一些担忧：过度依赖 AI 会不会让新人失去独立思考能力？', time: '2026-05-12' },
+        { author: 'TechBoy', avatar: 'T', text: '用 ChatGPT 做 code review 是个好主意！', time: '2026-05-13' },
+      ],
+      content: `<p>AI 编程助手正在从根本上改变我们编写代码的方式。本文将分享我过去一年深度使用 GitHub Copilot 和 ChatGPT 的实战经验。</p>
+<h3>Copilot 的最佳实践</h3><p>写好注释是 Copilot 发挥最大价值的关键。清晰的函数签名、类型定义和注释能让 AI 更准确地理解你的意图。</p>
+<h3>ChatGPT 在开发中的角色</h3><p>ChatGPT 最适合做的事情：解释复杂代码、生成样板代码、调试错误信息、编写单元测试、以及作为技术决策的对话伙伴。</p>
+<blockquote>AI 不是来取代开发者的，而是让你从重复劳动中解放出来，专注于更有创造性的工作。</blockquote>`,
     },
     {
       title: 'Node.js 性能优化：从瓶颈分析到架构调优',
@@ -1754,6 +2150,12 @@ body {
       date: '2026-05-05',
       readTime: '12 min',
       coverClass: 'cover-pattern-3',
+      likes: 67,
+      comments: [],
+      content: `<p>Node.js 以其高性能和异步非阻塞特性著称，但在实际生产环境中，不正确的使用方式往往会导致严重的性能问题。</p>
+<h3>常见的性能瓶颈</h3><p>事件循环阻塞、内存泄漏、不当的数据库查询、缺少缓存层是最常见的四个问题来源。</p>
+<h3>诊断工具</h3><p>Node.js 内置的 profiler、clinic.js、0x 等工具能帮助你快速定位性能热点。APM 工具如 Datadog、New Relic 则提供了生产环境的持续监控。</p>
+<h3>优化策略</h3><p>从代码层面（避免同步操作、合理使用 Stream）、到架构层面（引入 Redis 缓存、消息队列解耦）、再到部署层面（集群模式、水平扩展），每一层都有优化空间。</p>`,
     },
     {
       title: '设计系统入门：构建统一的产品视觉语言',
@@ -1763,6 +2165,14 @@ body {
       date: '2026-04-28',
       readTime: '7 min',
       coverClass: 'cover-pattern-4',
+      likes: 145,
+      comments: [
+        { author: 'UX小王', avatar: 'U', text: 'Design Token 的概念讲得很清晰，已经在团队推广了', time: '2026-04-29' },
+      ],
+      content: `<p>设计系统不仅仅是一套组件库，它是产品视觉语言的统一标准，是设计师与开发者之间沟通的桥梁。</p>
+<h3>从 Design Token 开始</h3><p>Design Token 是设计系统的最小原子单位——颜色、间距、字体、阴影等。将它们定义为平台无关的变量，是实现跨平台一致性的关键。</p>
+<h3>组件化思维</h3><p>好的组件应当是组合式的、可访问的、有明确的状态定义。Storybook 是开发和文档化组件的利器。</p>
+<h3>文档化与推广</h3><p>没有好的文档，设计系统就是一纸空文。确保每个组件都有使用示例、API 文档和设计指南。</p>`,
     },
     {
       title: 'TypeScript 高级类型体操：提升代码健壮性',
@@ -1772,6 +2182,15 @@ body {
       date: '2026-04-20',
       readTime: '9 min',
       coverClass: 'cover-pattern-0',
+      likes: 189,
+      comments: [
+        { author: 'TS粉丝', avatar: 'T', text: 'Conditional Types 真的是一扇新世界的大门', time: '2026-04-21' },
+        { author: '全栈小张', avatar: '张', text: '模板字面量类型以前完全没注意到，太强了', time: '2026-04-22' },
+      ],
+      content: `<p>TypeScript 的类型系统是图灵完备的——这意味着你可以在类型层面进行编程。本文将探索那些让你的代码更加健壮的高级类型技巧。</p>
+<h3>条件类型</h3><p>T extends U ? X : Y 语法让你能够根据类型关系做出类型推断。配合 infer 关键字，可以实现类型的模式匹配和提取。</p>
+<h3>模板字面量类型</h3><p>TypeScript 4.1 引入的模板字面量类型让你能在类型层面操作字符串，实现如事件名称推导、API 路径类型安全等高级功能。</p>
+<blockquote>好的类型定义，让代码成为自己的文档。</blockquote>`,
     },
   ];
 
@@ -1902,58 +2321,164 @@ body {
     grid.querySelectorAll('.read-more').forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
-        const idx = this.getAttribute('data-index');
-        showArticleToast(idx);
+        const idx = parseInt(this.getAttribute('data-index'));
+        openArticleDetail(idx);
       });
     });
   }
 
   // ============================================================
-  // Article click toast notification
+  // Article Detail: Open / Close / Like / Comment
   // ============================================================
-  function showArticleToast(index) {
-    const article = articles[index];
-    // Remove existing toast
-    const existing = document.querySelector('.article-toast');
-    if (existing) existing.remove();
+  let currentArticleIndex = -1;
+  let userLiked = false;
 
-    const toast = document.createElement('div');
-    toast.className = 'article-toast';
-    toast.innerHTML = `
-      <span>📖 正在打开：<strong>${article.title}</strong></span>
-      <span style="color: var(--text-muted); font-size: 0.8rem;">文章详情页开发中…</span>
+  function openArticleDetail(index) {
+    currentArticleIndex = index;
+    userLiked = false;
+    const article = articles[index];
+    const overlay = document.getElementById('articleDetail');
+
+    // Populate cover
+    document.getElementById('detailCover').className = 'detail-cover ' + article.coverClass;
+    // Populate tags
+    document.getElementById('detailTags').innerHTML = article.tags.map((tag, j) =>
+      `<span class="tag ${article.tagClass[j] || ''}">${tag}</span>`
+    ).join('');
+    // Populate title
+    document.getElementById('detailTitle').textContent = article.title;
+    // Populate meta
+    document.getElementById('detailMeta').innerHTML = `
+      <span><i class="fa-regular fa-calendar"></i> ${article.date}</span>
+      <span><i class="fa-regular fa-clock"></i> ${article.readTime}</span>
     `;
-    toast.style.cssText = `
-      position: fixed;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--bg-glass);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--border-glow);
-      border-radius: 16px;
-      padding: 16px 28px;
-      color: var(--text-primary);
-      font-size: 0.9rem;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      box-shadow: var(--shadow-glow-strong);
-      animation: toastIn 0.4s ease, toastOut 0.4s ease 2s forwards;
-    `;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 2500);
+    // Populate content
+    document.getElementById('detailContent').innerHTML = article.content;
+
+    // Like section
+    document.getElementById('likeCount').textContent = article.likes;
+    document.getElementById('likeIcon').className = 'fa-heart ' + (userLiked ? 'fa-solid' : 'fa-regular');
+    const likeBtn = document.getElementById('likeBtn');
+    likeBtn.classList.toggle('liked', userLiked);
+
+    // Comments
+    document.getElementById('commentCount').textContent = article.comments.length;
+    renderComments();
+
+    // Show overlay
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    overlay.scrollTop = 0;
+
+    // Hide floating social icons while reading
+    const sf = document.getElementById('socialFloat');
+    if (sf) sf.style.display = 'none';
   }
 
-  // Add toast keyframes dynamically
-  const toastStyle = document.createElement('style');
-  toastStyle.textContent = `
-    @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-    @keyframes toastOut { from { opacity: 1; transform: translateX(-50%) translateY(0); } to { opacity: 0; transform: translateX(-50%) translateY(20px); } }
-  `;
-  document.head.appendChild(toastStyle);
+  function closeArticleDetail() {
+    document.getElementById('articleDetail').classList.remove('active');
+    document.body.style.overflow = '';
+    const sf = document.getElementById('socialFloat');
+    if (sf) sf.style.display = '';
+  }
+
+  function renderComments() {
+    const article = articles[currentArticleIndex];
+    const list = document.getElementById('commentsList');
+    document.getElementById('commentCount').textContent = article.comments.length;
+    if (article.comments.length === 0) {
+      list.innerHTML = '<p style="color:var(--text-muted);font-size:0.9rem;">暂无评论，来说两句吧 ~</p>';
+    } else {
+      list.innerHTML = article.comments.map(c => `
+        <div class="comment-item">
+          <div class="comment-item-avatar">${c.avatar}</div>
+          <div class="comment-item-body">
+            <div class="comment-item-author">${c.author}</div>
+            <div class="comment-item-text">${c.text}</div>
+            <div class="comment-item-time">${c.time}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  // Like button handler
+  function initDetailInteractions() {
+    const likeBtn = document.getElementById('likeBtn');
+    likeBtn.addEventListener('click', function(e) {
+      if (currentArticleIndex < 0) return;
+      const article = articles[currentArticleIndex];
+      if (!userLiked) {
+        userLiked = true;
+        article.likes++;
+        likeBtn.classList.add('liked');
+        document.getElementById('likeIcon').className = 'fa-heart fa-solid';
+        document.getElementById('likeCount').textContent = article.likes;
+        // Spawn floating hearts
+        spawnHearts(e, likeBtn);
+      } else {
+        userLiked = false;
+        article.likes--;
+        likeBtn.classList.remove('liked');
+        document.getElementById('likeIcon').className = 'fa-heart fa-regular';
+        document.getElementById('likeCount').textContent = article.likes;
+      }
+    });
+
+    // Comment submit
+    const input = document.getElementById('commentInput');
+    const submitBtn = document.getElementById('commentSubmit');
+    submitBtn.addEventListener('click', submitComment);
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') submitComment();
+    });
+
+    // Back button
+    document.getElementById('detailBack').addEventListener('click', closeArticleDetail);
+
+    // ESC to close
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && document.getElementById('articleDetail').classList.contains('active')) {
+        closeArticleDetail();
+      }
+    });
+  }
+
+  function submitComment() {
+    const input = document.getElementById('commentInput');
+    const text = input.value.trim();
+    if (!text || currentArticleIndex < 0) return;
+    const article = articles[currentArticleIndex];
+    const now = new Date();
+    const timeStr = now.getFullYear() + '-' +
+      String(now.getMonth() + 1).padStart(2, '0') + '-' +
+      String(now.getDate()).padStart(2, '0');
+    article.comments.push({
+      author: '我',
+      avatar: '我',
+      text: text,
+      time: timeStr,
+    });
+    input.value = '';
+    renderComments();
+  }
+
+  function spawnHearts(e, btn) {
+    const rect = btn.getBoundingClientRect();
+    const cx = e.clientX - rect.left;
+    const cy = e.clientY - rect.top;
+    for (let i = 0; i < 6; i++) {
+      const heart = document.createElement('span');
+      heart.className = 'like-float-heart';
+      heart.innerHTML = '<i class="fa-solid fa-heart"></i>';
+      heart.style.left = cx + (Math.random() - 0.5) * 40 + 'px';
+      heart.style.top = cy + 'px';
+      heart.style.animationDuration = (0.6 + Math.random() * 0.6) + 's';
+      heart.style.fontSize = (0.8 + Math.random() * 1) + 'rem';
+      btn.appendChild(heart);
+      heart.addEventListener('animationend', () => heart.remove());
+    }
+  }
 
   // ============================================================
   // Typing Effect
@@ -2414,6 +2939,7 @@ body {
     initBackToTop();
     initRippleEffect();
     initMobileMenu();
+    initDetailInteractions();
     observeFadeUpElements();
   }
 

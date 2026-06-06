@@ -910,6 +910,99 @@ body {
 }
 
 /* ============================================================
+   Friends Link Section
+   ============================================================ */
+.friends-intro a:hover {
+  text-decoration: underline;
+}
+
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.friend-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+.friend-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-glow);
+  box-shadow: var(--shadow-glow);
+  background: var(--bg-card-hover);
+}
+
+.friend-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.friend-name {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.friend-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.friend-visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-1);
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border-glass);
+  transition: all 0.3s;
+}
+.friend-card:hover .friend-visit {
+  background: var(--accent-1);
+  color: #fff;
+  border-color: var(--accent-1);
+}
+
+/* Friend avatar gradients */
+.friend-avatar-0 { background: linear-gradient(135deg, #667eea, #764ba2); }
+.friend-avatar-1 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+.friend-avatar-2 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+.friend-avatar-3 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+.friend-avatar-4 { background: linear-gradient(135deg, #fa709a, #fee140); }
+.friend-avatar-5 { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+
+/* ============================================================
    Footer
    ============================================================ */
 .footer {
@@ -1033,6 +1126,9 @@ body {
   .about-section {
     grid-template-columns: 1fr;
   }
+  .friends-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
   .social-float {
     right: 16px;
     bottom: 100px;
@@ -1064,6 +1160,10 @@ body {
   .articles-grid {
     grid-template-columns: 1fr;
     gap: 20px;
+  }
+  .friends-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
   .section-title {
     font-size: 1.5rem;
@@ -1182,6 +1282,7 @@ body {
     <li><a href="#home" class="active">首页</a></li>
     <li><a href="#articles">文章</a></li>
     <li><a href="#about">关于</a></li>
+    <li><a href="#friends">友链</a></li>
     <li><a href="javascript:void(0)" aria-label="搜索"><i class="fa-solid fa-magnifying-glass"></i></a></li>
   </ul>
 
@@ -1201,6 +1302,7 @@ body {
   <a href="#home">首页</a>
   <a href="#articles">文章</a>
   <a href="#about">关于</a>
+  <a href="#friends">友链</a>
   <a href="javascript:void(0)">搜索</a>
 </div>
 
@@ -1306,6 +1408,18 @@ body {
     </div>
   </section>
 
+  <!-- Friends Link Section -->
+  <section id="friends" style="padding-top: 40px;">
+    <div class="section-header fade-up">
+      <h2 class="section-title">🔗 友链</h2>
+      <div class="section-line"></div>
+    </div>
+    <p class="friends-intro fade-up delay-1" style="color:var(--text-muted);font-size:0.95rem;margin-top:-24px;margin-bottom:32px;">
+      以下是我常逛的优质博客与站点，排名不分先后。欢迎<a href="javascript:void(0)" id="applyFriendLink" style="color:var(--accent-1);font-weight:600;">申请友链</a> ✨
+    </p>
+    <div class="friends-grid" id="friendsGrid"></div>
+  </section>
+
   <!-- Footer -->
   <footer class="footer">
     <p>© 2026 yy · 用 <span class="heart">♥</span> 构建 · 保留所有权利</p>
@@ -1391,6 +1505,99 @@ body {
       coverClass: 'cover-pattern-0',
     },
   ];
+
+  // ============================================================
+  // Friends Link Data (Mock)
+  // ============================================================
+  const friends = [
+    {
+      name: 'Sunny 的小站',
+      desc: '前端工程化与性能优化的深度思考者',
+      url: 'https://example.com',
+      avatarClass: 'friend-avatar-0',
+      initial: 'S',
+    },
+    {
+      name: 'Pixel Café',
+      desc: 'UI 设计与交互体验的灵感收集地',
+      url: 'https://example.com',
+      avatarClass: 'friend-avatar-1',
+      initial: 'P',
+    },
+    {
+      name: '云游四海的码农',
+      desc: '远程工作、数字游民生活方式的探索与分享',
+      url: 'https://example.com',
+      avatarClass: 'friend-avatar-2',
+      initial: '云',
+    },
+    {
+      name: 'TypeNight',
+      desc: 'TypeScript 类型体操与 Rust 学习笔记',
+      url: 'https://example.com',
+      avatarClass: 'friend-avatar-3',
+      initial: 'T',
+    },
+    {
+      name: '设计几何学',
+      desc: '用数学思维解构视觉设计',
+      url: 'https://example.com',
+      avatarClass: 'friend-avatar-4',
+      initial: '几',
+    },
+    {
+      name: 'AI 周刊',
+      desc: '每周精选 AI 论文、产品与行业动态',
+      url: 'https://example.com',
+      avatarClass: 'friend-avatar-5',
+      initial: 'AI',
+    },
+  ];
+
+  // ============================================================
+  // Render Friends Links
+  // ============================================================
+  function renderFriends() {
+    const grid = document.getElementById('friendsGrid');
+    if (!grid) return;
+    grid.innerHTML = friends.map((friend, i) => `
+      <a href="${friend.url}" target="_blank" rel="noopener noreferrer"
+         class="friend-card fade-up delay-${(i % 5) + 1}">
+        <div class="friend-avatar ${friend.avatarClass}">${friend.initial}</div>
+        <span class="friend-name">${friend.name}</span>
+        <span class="friend-desc">${friend.desc}</span>
+        <span class="friend-visit">
+          访问 <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </span>
+      </a>
+    `).join('');
+    observeFadeUpElements();
+
+    // "申请友链" click handler
+    const applyBtn = document.getElementById('applyFriendLink');
+    if (applyBtn) {
+      applyBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const toast = document.createElement('div');
+        toast.className = 'article-toast';
+        toast.innerHTML = `
+          <span>📬 友链申请：发送邮件至 <strong>hi@yy4550.me</strong></span>
+          <span style="color:var(--text-muted);font-size:0.8rem;">请附上你的站点名称、URL 和一句话介绍</span>
+        `;
+        toast.style.cssText = `
+          position:fixed;bottom:32px;left:50%;transform:translateX(-50%);
+          background:var(--bg-glass);backdrop-filter:blur(24px);
+          -webkit-backdrop-filter:blur(24px);border:1px solid var(--border-glow);
+          border-radius:16px;padding:16px 28px;color:var(--text-primary);
+          font-size:0.9rem;z-index:9999;display:flex;flex-direction:column;gap:4px;
+          box-shadow:var(--shadow-glow-strong);
+          animation:toastIn 0.4s ease, toastOut 0.4s ease 2.5s forwards;
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      });
+    }
+  }
 
   // ============================================================
   // Render Articles
@@ -1850,6 +2057,7 @@ body {
     initLoadingBar();
     initThemeToggle();
     renderArticles();
+    renderFriends();
     initTypingEffect();
     initMouseGlow();
     initParticles();
